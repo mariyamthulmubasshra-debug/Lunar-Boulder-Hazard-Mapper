@@ -1,6 +1,7 @@
 
 import streamlit as st
 from ultralytics import YOLO
+from src.rag_assistant import ask_lunar_assistant
 from pathlib import Path
 from PIL import Image
 import numpy as np
@@ -74,12 +75,18 @@ if uploaded_file is not None:
             "not a complete lunar landing safety evaluation."
         )
         st.subheader("Adaptive Landing-Zone Intelligence")
+        st.caption(
+            "Relative score = 50% normalized boulder count + "
+            "50% normalized segmented area. Higher scores indicate "
+            "greater predicted boulder burden, not confirmed landing danger."
+        )
 
         height, width = image.size[1], image.size[0]
         zone_height = height / 3
         zone_width = width / 3
 
         zone_counts = np.zeros((3, 3), dtype=int)
+        zone_areas = np.zeros((3, 3), dtype=float)
 
         if result.masks is not None:
             for polygon in result.masks.xy:
@@ -88,11 +95,13 @@ if uploaded_file is not None:
 
                 center_x = np.mean(polygon[:, 0])
                 center_y = np.mean(polygon[:, 1])
+                boulder_area = cv2.contourArea(polygon.astype(np.float32))
 
                 col = min(int(center_x / zone_width), 2)
                 row = min(int(center_y / zone_height), 2)
 
                 zone_counts[row, col] += 1
+                zone_areas[row, col] += boulder_area
 
         st.write("Candidate boulder detections in each zone:")
 
@@ -108,8 +117,16 @@ if uploaded_file is not None:
                         int(count_in_zone)
                     )
 
-        minimum_count = np.min(zone_counts)
-        lowest_zones = np.argwhere(zone_counts == minimum_count)
+        max_count = np.max(zone_counts)
+        max_area = np.max(zone_areas)
+
+        count_component = zone_counts / max_count if max_count > 0 else np.zeros((3, 3))
+        area_component = zone_areas / max_area if max_area > 0 else np.zeros((3, 3))
+
+        hazard_scores = 50 * count_component + 50 * area_component
+
+        minimum_score = np.min(hazard_scores)
+        lowest_zones = np.argwhere(hazard_scores == minimum_score)
 
         zone_names = [
             f"Zone {row + 1}-{col + 1}"
@@ -117,10 +134,10 @@ if uploaded_file is not None:
         ]
 
         st.success(
-            f"Lowest detected-boulder count: {minimum_count}"
+            f"Lowest relative hazard score: {minimum_score:.1f}/100"
         )
 
-        st.write("Zones with the lowest count:")
+        st.write("Zones with the lowest relative boulder-hazard score:")
 
         for zone in zone_names:
             st.write(f"- {zone}")
@@ -133,16 +150,17 @@ if uploaded_file is not None:
         hazard_map = image.copy()
         draw = np.array(hazard_map)
 
-        minimum = np.min(zone_counts)
-        maximum = np.max(zone_counts)
+        minimum = np.min(hazard_scores)
+        maximum = np.max(hazard_scores)
 
         for row in range(3):
             for col in range(3):
                 count = zone_counts[row, col]
+                score = hazard_scores[row, col]
 
-                if count == minimum:
+                if score == minimum:
                     color = (0, 255, 0)
-                elif count == maximum:
+                elif score == maximum:
                     color = (255, 0, 0)
                 else:
                     color = (255, 255, 0)
@@ -171,3 +189,42 @@ if uploaded_file is not None:
                 )
 
         st.image(draw, caption="Lunar Boulder Density by Zone", width="stretch")
+
+
+st.divider()
+
+st.subheader("🌕 Lunar Hazard Knowledge Assistant")
+
+st.write(
+    "Ask questions about lunar boulder hazards, "
+    "landing-site assessment, and the science behind this project."
+)
+
+question = st.text_input(
+    "Ask your lunar science question:",
+    placeholder="Why are large boulders dangerous during landing?"
+)
+
+if st.button("Ask AI Assistant"):
+    if question.strip():
+        try:
+            with st.spinner("Searching knowledge base and generating answer..."):
+                answer, sources = ask_lunar_assistant(question)
+
+            st.markdown("### Answer")
+            st.write(answer)
+
+            st.caption("References and knowledge sources:")
+
+            for source in sources:
+                if isinstance(source, dict) and source.get("url"):
+                    st.markdown(f"- [{source['title']}]({source['url']})")
+                elif isinstance(source, dict):
+                    st.write(f"- {source['title']}")
+                else:
+                    st.write(f"- {source}")
+
+        except Exception as error:
+            st.error(f"Assistant error: {error}")
+    else:
+        st.warning("Please enter a question first.")

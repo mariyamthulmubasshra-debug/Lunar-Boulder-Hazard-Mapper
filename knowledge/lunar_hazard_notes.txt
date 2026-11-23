@@ -1,0 +1,59 @@
+# Lunar Boulder Hazards and Landing-Site Assessment
+
+## 1. Why boulders matter
+
+Boulders can create hazards during lunar landings. A boulder beneath a landing leg may cause spacecraft tilt, while large rocks can damage a lander. Boulder distribution and size are therefore relevant to landing-site assessment.
+
+Source URL: https://ntrs.nasa.gov/citations/20160012744
+
+## 2. What makes a landing area suitable?
+
+A landing area should ideally have relatively smooth and level terrain, limited large boulders, and no dangerous slopes, cliffs, or craters. A complete assessment requires more than identifying rocks.
+
+Source URL: https://svs.gsfc.nasa.gov/3587/
+
+## 3. How NASA evaluates landing hazards
+
+NASA's lunar landing research describes using terrain information, imaging, and hazard-detection systems. NASA's SPLICE technology includes a Hazard Detection Lidar that creates three-dimensional terrain maps to identify hazards such as steep slopes and large rocks.
+
+Source URL: https://www.nasa.gov/safe-and-precise-landing-integrated-capabilities-evolution-splice/
+
+## 4. Why boulder size and distribution matter
+
+The number, size, and spatial distribution of boulders can help characterize potential landing hazards. A region with fewer detected boulders may have a lower estimated boulder burden, but this alone does not establish that it is safe.
+
+## 5. Limitations of image-based boulder detection
+
+Image-based detection depends on image resolution, illumination, shadows, surface appearance, and model performance. Without image scale information, object dimensions should be reported in pixels rather than metres.
+
+## 6. Limitations of this project
+
+Lunar Boulder Hazard Mapper focuses on boulder detection and relative boulder burden. It does not independently evaluate terrain slope, surface strength, subsurface conditions, illumination, spacecraft landing-leg geometry, or all mission constraints.
+
+Its output is decision-support information, not a certified safe-landing recommendation.
+
+## References
+
+1. NASA — Apollo Landing Site Selection:
+https://www.nasa.gov/wp-content/uploads/static/history/SP-350/ch-5-5.html
+
+2. NASA — Safe and Precise Landing (SPLICE):
+https://www.nasa.gov/safe-and-precise-landing-integrated-capabilities-evolution-splice/
+
+3. NASA Technical Reports Server — Frequency-Range Distribution of Boulders Around Cone Crater:
+https://ntrs.nasa.gov/citations/20160012744
+
+4. NASA — LRO Scouts for Safe Landing Sites:
+https://svs.gsfc.nasa.gov/3587/
+
+
+## 7. NASA Scientific References
+
+### NASA SPLICE - Safe and Precise Landing
+Source URL: https://www.nasa.gov/safe-and-precise-landing-integrated-capabilities-evolution-splice/
+
+### NASA Technical Report - Boulder Distribution Around Cone Crater
+Source URL: https://ntrs.nasa.gov/citations/20160012744
+
+### NASA - LRO Scouts for Safe Landing Sites
+Source URL: https://svs.gsfc.nasa.gov/3587/

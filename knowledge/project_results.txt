@@ -1,0 +1,40 @@
+
+# Lunar Boulder Hazard Mapper - Model Evaluation
+
+## 1. Model Information
+The project uses YOLO11n-seg for lunar boulder detection and instance segmentation.
+
+The model was trained for 27 epochs. The best checkpoint was obtained at epoch 19.
+
+Training hardware: Google Colab Tesla T4 GPU.
+
+## 2. Independent Test Dataset
+The final evaluation used 260 test images containing 7,162 annotated boulder instances.
+
+## 3. Bounding Box Test Results
+Precision: 0.666
+Recall: 0.600
+mAP50: 0.654
+mAP50-95: 0.257
+
+## 4. Segmentation Test Results
+Mask Precision: 0.404
+Mask Recall: 0.376
+Mask mAP50: 0.293
+Mask mAP50-95: 0.073
+
+## 5. Model Performance
+The model checkpoint is approximately 5.75 MB.
+
+Measured inference time on the Colab T4 GPU was approximately 7.2 milliseconds per image during evaluation. This does not represent the complete application response time.
+
+## 6. Important Limitations
+Bounding-box detection and segmentation performance are different.
+
+The segmentation results indicate that mask prediction still has limitations.
+
+The model's predictions are candidate boulder detections and should not be treated as confirmed objects.
+
+The project evaluates boulder-related hazards only. It does not independently evaluate terrain slope, surface strength, illumination, or all spacecraft landing constraints.
+
+The output is decision-support information, not a certified safe-landing recommendation.
