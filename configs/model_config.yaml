@@ -1,0 +1,18 @@
+
+model:
+  name: YOLO11n-seg
+  weights: models/best.pt
+  task: segment
+  image_size: 640
+  confidence_threshold: 0.295
+  iou_threshold: 0.7
+  classes:
+    - boulder
+
+dataset:
+  name: BOULDERING Lunar Subset
+  test_images: 260
+  test_instances: 7162
+
+hardware:
+  training: Google Colab Tesla T4

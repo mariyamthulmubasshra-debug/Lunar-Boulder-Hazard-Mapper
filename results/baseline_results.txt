@@ -1,0 +1,33 @@
+
+LUNAR BOULDER HAZARD MAPPER
+Model: YOLO11n-seg
+Dataset: BOULDERING Lunar Subset
+Training: 27 epochs (early stopping)
+Image size: 640 x 640
+Hardware: Google Colab Tesla T4
+
+FINAL TEST EVALUATION
+Test images: 260
+Ground-truth instances: 7,162
+
+BOX DETECTION
+Precision: 0.666
+Recall: 0.600
+mAP50: 0.654
+mAP50-95: 0.257
+
+INSTANCE SEGMENTATION
+Precision: 0.404
+Recall: 0.376
+mAP50: 0.293
+mAP50-95: 0.073
+
+INFERENCE SPEED (Tesla T4)
+Preprocessing: 1.9 ms
+Inference: 7.2 ms
+Postprocessing: 6.1 ms
+
+NOTE
+These are baseline results on the held-out test split.
+Segmentation performance is limited and requires improvement.
+Inference timings do not represent full application response time.
