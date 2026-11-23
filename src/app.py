@@ -1,7 +1,7 @@
 
 import streamlit as st
 from ultralytics import YOLO
-from src.rag_assistant import ask_lunar_assistant
+from rag_assistant import ask_lunar_assistant
 from pathlib import Path
 from PIL import Image
 import numpy as np
